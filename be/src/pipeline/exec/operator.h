@@ -266,7 +266,7 @@ public:
     virtual std::vector<Dependency*> execution_dependencies() { return {}; }
 
     Status filter_block(const vectorized::VExprContextSPtrs& expr_contexts,
-                        vectorized::Block* block, size_t column_to_keep);
+                        vectorized::Block* block);
 
     int64_t& estimate_memory_usage() { return _estimate_memory_usage; }
 
@@ -422,8 +422,8 @@ public:
 
         _spill_read_file_time =
                 ADD_TIMER_WITH_LEVEL(Base::custom_profile(), "SpillReadFileTime", 1);
-        _spill_read_derialize_block_timer =
-                ADD_TIMER_WITH_LEVEL(Base::custom_profile(), "SpillReadDerializeBlockTime", 1);
+        _spill_read_deserialize_block_timer =
+                ADD_TIMER_WITH_LEVEL(Base::custom_profile(), "SpillReadDeserializeBlockTime", 1);
 
         _spill_read_block_count = ADD_COUNTER_WITH_LEVEL(Base::custom_profile(),
                                                          "SpillReadBlockCount", TUnit::UNIT, 1);
@@ -498,7 +498,7 @@ public:
     RuntimeProfile::Counter* _spill_read_wait_in_queue_timer = nullptr;
 
     RuntimeProfile::Counter* _spill_read_file_time = nullptr;
-    RuntimeProfile::Counter* _spill_read_derialize_block_timer = nullptr;
+    RuntimeProfile::Counter* _spill_read_deserialize_block_timer = nullptr;
     RuntimeProfile::Counter* _spill_read_block_count = nullptr;
     // Total bytes of read data in Block format(in memory format)
     RuntimeProfile::Counter* _spill_read_block_data_size = nullptr;
